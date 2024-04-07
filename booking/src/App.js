@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { useState } from 'react';
 import './App.css';
 
@@ -12,6 +10,7 @@ function App() {
 
   const [selectedBus, setSelectedBus] = useState(null);
   const [seats, setSeats] = useState([]);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   const handleBusSelect = (bus) => {
     setSelectedBus(bus);
@@ -19,14 +18,25 @@ function App() {
   };
 
   const handleSeatClick = (index) => {
-    const updatedSeats = [...seats];
-    updatedSeats[index] = !updatedSeats[index];
-    setSeats(updatedSeats);
+    if (!seats[index]) {
+      const updatedSeats = [...seats];
+      updatedSeats[index] = true;
+      setSeats(updatedSeats);
+    }
   };
 
-  const handleBooking = () => {
-    // You can handle booking logic here, such as sending data to a backend
-    alert(`You have booked seat(s) in ${selectedBus.name}`);
+  const handlePayment = () => {
+    // Simulating payment process
+    setTimeout(() => {
+      setPaymentSuccess(true);
+    }, 2000);
+  };
+
+  const handleClosePopup = () => {
+    setPaymentSuccess(false);
+    // Reset selected bus and seats
+    setSelectedBus(null);
+    setSeats([]);
   };
 
   return (
@@ -56,7 +66,16 @@ function App() {
               </div>
             ))}
           </div>
-          <button onClick={handleBooking}>Book Seat(s)</button>
+          <button onClick={handlePayment}>Book Seat(s)</button>
+        </div>
+      )}
+      {paymentSuccess && (
+        <div className="popup">
+          <div className="popup-content">
+            <h2>Payment Successful!</h2>
+            <p>Thank you for booking with us.</p>
+            <button onClick={handleClosePopup}>Close</button>
+          </div>
         </div>
       )}
     </div>
